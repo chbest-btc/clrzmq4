@@ -1543,7 +1543,7 @@ namespace ZeroMQTest
             }
         }
 
-        private static void DoWithConnectedSocketPair(Action<ZSocket, ZSocket> action)
+        internal static void DoWithConnectedSocketPair(Action<ZSocket, ZSocket> action)
         {
             DoWithUnconnectedSocket((context, sendSocket) =>
             {
@@ -1556,7 +1556,7 @@ namespace ZeroMQTest
             }, ZSocketType.PAIR);
         }
 
-        private static ZMessage CreateSingleFrameTestMessage()
+        internal static ZMessage CreateSingleFrameTestMessage()
         {
             return new ZMessage(new ZFrame[] { new ZFrame('a') });
         }

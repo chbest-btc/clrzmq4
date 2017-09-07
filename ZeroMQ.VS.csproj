@@ -60,6 +60,7 @@
     <Compile Include="Z85.cs" />
     <Compile Include="ZActor.cs" />
     <Compile Include="ZFrameOption.cs" />
+    <Compile Include="ZPoller.cs" />
     <Compile Include="ZThread.cs" />
     <Compile Include="ZSocketSetup.cs" />
     <Compile Include="Devices\PubSubDevice.cs" />

@@ -428,5 +428,57 @@
 		public delegate IntPtr zmq_strerror_delegate(int errnum);
 		public static readonly zmq_strerror_delegate strerror = zmq_strerror;
 
-	}
+    [DllImport(LibraryName, EntryPoint = "zmq_poller_new", CallingConvention = CCCdecl)]
+    private static extern IntPtr zmq_poller_new();
+    [DllImport(__Internal, EntryPoint = "zmq_poller_new", CallingConvention = CCCdecl)]
+    private static extern IntPtr zmq_poller_new__Internal();
+    public delegate IntPtr zmq_poller_new_delegate();
+    public static readonly zmq_poller_new_delegate poller_new = zmq_poller_new;
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ZmqPollerEvent
+    {
+      public void* socket;
+      //ToDo: Define SOCKET as in zeromq.
+//#if defined _WIN32
+//      SOCKET fd;
+//#else
+      public readonly int _fd;
+//#endif
+      public readonly MyCallbackFunc _userData;
+      public readonly short _events;
+      public ZmqPollerEvent(void* socket, int fd, MyCallbackFunc userData, short events)
+      {
+        this.socket = socket;
+        _fd = fd;
+        _userData = userData;
+        _events = events;
+      }
+    }
+
+    [DllImport(LibraryName, EntryPoint = "zmq_poller_wait_all", CallingConvention = CCCdecl)]
+    private static extern int zmq_poller_wait_all(IntPtr poller, [In, Out] ZmqPollerEvent[] events, int numberOfEvents, long timeout);
+    [DllImport(__Internal, EntryPoint = "zmq_poller_wait_all", CallingConvention = CCCdecl)]
+    private static extern IntPtr zmq_poller_wait__Internal();
+    public delegate int zmq_poller_wait_all_delegate(IntPtr poller, [In, Out] ZmqPollerEvent[] events, int numberOfEvents, long timeout);
+    public static readonly zmq_poller_wait_all_delegate poller_wait_all = zmq_poller_wait_all;
+
+    [DllImport(LibraryName, EntryPoint = "zmq_poller_destroy", CallingConvention = CCCdecl)]
+    private static extern int zmq_poller_destroy(out IntPtr poller);
+    [DllImport(__Internal, EntryPoint = "zmq_poller_destroy", CallingConvention = CCCdecl)]
+    private static extern IntPtr zmq_poller_destroy__Internal(out IntPtr poller);
+    public delegate int zmq_poller_destroy_delegate(out IntPtr poller);
+    public static readonly zmq_poller_destroy_delegate poller_destroy = zmq_poller_destroy;
+
+    //std::function<void(void)> 
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void MyCallbackFunc();
+
+    [DllImport(LibraryName, EntryPoint = "zmq_poller_add", CallingConvention = CCCdecl)]
+	  private static extern int zmq_poller_add(IntPtr poller, IntPtr socket, IntPtr userData, short events);
+    [DllImport(__Internal, EntryPoint = "zmq_poller_add", CallingConvention = CCCdecl)]
+    private static extern int zmq_poller_add__Internal(IntPtr poller, IntPtr socket, IntPtr userData, short events);
+    public delegate int zmq_poller_add_delegate(IntPtr poller, IntPtr socket, IntPtr userData, short events);
+    public static readonly zmq_poller_add_delegate poller_add = zmq_poller_add;
+  }
 }
